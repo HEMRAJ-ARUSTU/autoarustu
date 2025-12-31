@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+
+
+
+
+div[data-testid="table-header"],
+.rdt_TableHead {
+  position: sticky !important;
+  top: 0;
+  z-index: 10 !important;
+  background: #fff !important;
+}
+
+
+.rdt_Table,
+.datatable-wrapper {
+  position: relative !important;
+  z-index: 0 !important;
+  overflow: visible !important;
+}
+
+
+.basic-single-select .select__value-container {
+  max-height: 36px;
+  overflow-y: auto;
+}
+
+.select__value-container {
+  max-height: 36px;
+  overflow-y: auto;
+}
