@@ -52,7 +52,7 @@ function App() {
             <Dashboard />
           </ProtectedRoute>
         }>
-          <Route index element={<Home />} />
+          <Route index element={<Home />} /> 
           <Route path="agent" element={<Agent />} />
           <Route path="supplier" element={<Supplier />} />
           <Route path="contact" element={<Contact />} />
