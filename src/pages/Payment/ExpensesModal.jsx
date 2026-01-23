@@ -3,8 +3,10 @@ import Select from "react-select";
 import { FiX } from "react-icons/fi";
 import { PostWithToken, Comman_changeArrayFormat } from "../../ApiMethods/ApiMethods";
 import { toastifySuccess } from "../../Utility/Utility";
+import { set } from "date-fns";
 
-const PaymentModal = ({ open, onClose, editData, onSuccess }) => {
+const ExpensesModal = ({ open, onClose, editData, onSuccess }) => {
+    console.log("ExpensesModal editData:", editData);
   const inputCls =
     "w-full rounded-sm border border-slate-200 px-4 py-2.5 text-sm " +
     "outline-none transition " +
@@ -22,6 +24,7 @@ const PaymentModal = ({ open, onClose, editData, onSuccess }) => {
   const [errors, setErrors] = useState({});
   const [partyOptions, setPartyOptions] = useState([]);
   const [originalRemainingAmt, setOriginalRemainingAmt] = useState(0);
+  const[expeseamount,setExpeseamount]=useState(0);
 
   const paymentTypeOptions = [
     { value: "CASH", label: "CASH" },
@@ -92,16 +95,17 @@ const PaymentModal = ({ open, onClose, editData, onSuccess }) => {
       ) || null;
 
       const today = new Date().toISOString().split("T")[0];
-      const initialRemainingAmt = parseFloat(editData.ReamaningAmt) || 0;
-      setOriginalRemainingAmt(initialRemainingAmt);
+    //   const initialRemainingAmt = parseFloat(editData.ReamaningAmt) || "";
+    //   setOriginalRemainingAmt(initialRemainingAmt);
       setvalue({
         PartyID: partyOption,
-        ReamaningAmt: editData.ReamaningAmt || "",
+        // ReamaningAmt: editData.expensesamount || 0,
         Paymenttype: paymentTypeOption,
         Amt: "",
         ByPayment: editData.ByPayment || "",
         PaymentDtTm: editData.PaymentDtTm || today,
       });
+      setExpeseamount(editData.expensesamount || 0);
       setErrors({});
     } else {
       const today = new Date().toISOString().split("T")[0];
@@ -160,11 +164,12 @@ const PaymentModal = ({ open, onClose, editData, onSuccess }) => {
     }
     if (!value.Amt.trim()) {
       newErrors.Amt = "Amount is required";
-    } else if (parseFloat(value.Amt) <= 0) {
-      newErrors.Amt = "Amount must be greater than 0";
-    } else if (parseFloat(value.Amt) > originalRemainingAmt) {
-      newErrors.Amt = `Amount cannot be greater than remaining amount (${originalRemainingAmt})`;
-    }
+    } 
+    // else if (parseFloat(value.Amt) <= 0) {
+    //   newErrors.Amt = "Amount must be greater than 0";
+    // } else if (parseFloat(value.Amt) > originalRemainingAmt) {
+    //   newErrors.Amt = `Amount cannot be greater than remaining amount (${originalRemainingAmt})`;
+    // }
     if (!value.PaymentDtTm.trim()) {
       newErrors.PaymentDtTm = "Payment Date is required";
     }
@@ -179,17 +184,17 @@ const PaymentModal = ({ open, onClose, editData, onSuccess }) => {
       const calculatedRemaining = originalRemainingAmt - (parseFloat(value.Amt) || 0);
       const payload = {
         PartyID: value.PartyID?.value || value.PartyID || "",
-        ReamaningAmt: calculatedRemaining >= 0 ? calculatedRemaining : "0",
+        // ReamaningAmt: calculatedRemaining >= 0 ? calculatedRemaining : "0",
         Paymenttype: value.Paymenttype?.value || value.Paymenttype || "",
         Amt: value.Amt || "0",
         ByPayment: value.ByPayment || "",
         PaymentDtTm: value.PaymentDtTm || new Date().toISOString(),
       };
-      const res = await PostWithToken("Payment/Insert_Payment", payload);
+      const res = await PostWithToken("ExpensePayment/Insert_ExpensePayment", payload);
       if (res) {
         onClose?.();
         onSuccess?.();
-        toastifySuccess("Payment inserted successfully");
+        toastifySuccess("Expenses inserted successfully");
         const today = new Date().toISOString().split("T")[0];
         setvalue({
           PartyID: null,
@@ -202,7 +207,7 @@ const PaymentModal = ({ open, onClose, editData, onSuccess }) => {
         setErrors({});
       }
     } catch (error) {
-      console.error("Insert_Payment error:", error);
+      console.error("Insert_Expeses error:", error);
     }
   };
 
@@ -217,7 +222,7 @@ const PaymentModal = ({ open, onClose, editData, onSuccess }) => {
           <div className="p-4 sm:p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg sm:text-xl font-semibold text-slate-800">
-                {editData ? "Update Payment" : "Add Payment"}
+                {editData ? "Update Expense" : "Add Expense"}
               </h2>
               <button
                 type="button"
@@ -294,11 +299,12 @@ const PaymentModal = ({ open, onClose, editData, onSuccess }) => {
 
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium text-slate-600">
-                  Remaining Amount
+                  Expenses Amount
                 </label>
                 <input
                   type="text"
-                  value={value.ReamaningAmt}
+                //   value={value.ReamaningAmt}
+                value={expeseamount}
                   placeholder="Auto calculated"
                   className={inputCls + " bg-slate-50 cursor-not-allowed"}
                   readOnly
@@ -356,5 +362,5 @@ const PaymentModal = ({ open, onClose, editData, onSuccess }) => {
   );
 };
 
-export default PaymentModal;
+export default ExpensesModal;
 
