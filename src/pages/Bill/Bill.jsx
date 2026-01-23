@@ -172,6 +172,7 @@ const Bill = () => {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search bill..."
               className="w-full sm:w-64 md:w-72 rounded-sm border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              autoComplete="off-district"
             />
 
             <button

@@ -92,11 +92,11 @@ const Agent = () => {
                 sortable: true,
                 cell: (row) => <div className="font-medium text-slate-800">{row.ReferenceName}</div>,
             },
-            // {
-            //     name: <span className="font-semibold">Company Name</span>,
-            //     selector: (row) => row.company || "-",
-            //     sortable: true,
-            // },
+
+
+
+
+
 
             {
                 name: <span className="font-semibold">mobile No.</span>,
@@ -111,7 +111,7 @@ const Agent = () => {
 
             {
                 name: "Actions",
-                // button: true,
+
                 cell: (r) => (
                     <div className="flex gap-2">
                         <button

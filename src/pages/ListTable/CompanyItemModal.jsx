@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
+import { FiX } from "react-icons/fi";
 import { PostWithToken, Comman_changeArrayFormat } from "../../ApiMethods/ApiMethods";
 import { toastifySuccess } from "../../Utility/Utility";
 
@@ -214,12 +215,22 @@ const CompanyItemModal = ({ open, onClose, editData, onSuccess }) => {
       <div className="relative mx-auto flex min-h-screen items-center justify-center p-2 sm:p-4">
         <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 my-4 max-h-[95vh] overflow-y-auto">
           <div className="p-4 sm:p-6">
-            <h2 className="mb-4 text-lg sm:text-xl font-semibold text-slate-800">
-              {editData ? "Update Company Item" : "Add Company Item"}
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg sm:text-xl font-semibold text-slate-800">
+                {editData ? "Update Company Item" : "Add Company Item"}
+              </h2>
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-slate-500 hover:text-slate-700 transition-colors p-1 rounded-lg hover:bg-slate-100"
+                title="Close"
+              >
+                <FiX className="w-5 h-5" />
+              </button>
+            </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {/* Item */}
+
               <div className="flex flex-col sm:col-span-2">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Item <span className="text-red-500">*</span>
@@ -237,7 +248,6 @@ const CompanyItemModal = ({ open, onClose, editData, onSuccess }) => {
                 )}
               </div>
 
-              {/* Company */}
               <div className="flex flex-col sm:col-span-2">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Company {editData?.CompanyID && <span className="text-red-500">*</span>}
@@ -256,7 +266,6 @@ const CompanyItemModal = ({ open, onClose, editData, onSuccess }) => {
                 )}
               </div>
 
-              {/* Description */}
               <div className="flex flex-col sm:col-span-2">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Description <span className="text-red-500">*</span>
@@ -275,21 +284,6 @@ const CompanyItemModal = ({ open, onClose, editData, onSuccess }) => {
             </div>
 
             <div className="mt-6 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  setForm({
-                    ItemID: null,
-                    CompanyID: null,
-                    Description: "",
-                  });
-                }}
-                className="w-full sm:w-auto rounded-xl border border-slate-200 px-4 sm:px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-              >
-                Cancel
-              </button>
-
               {editData ? (
                 <button
                   type="button"

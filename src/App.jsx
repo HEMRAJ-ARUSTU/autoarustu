@@ -16,25 +16,26 @@ import Party from './pages/Party/Party';
 import Temp from './pages/Temp/Temp';
 import Payment from './pages/Payment/Payment';
 import PaymentReminder from './pages/PaymentReminder/PaymentReminder';
-// import Table from './pages/Table';
+import PurchaseOrder from './pages/PurchaseOrder/PurchaseOrder';
+import POPayment from './pages/POPayment/POPayment';
+import TaxInvoice from './pages/TaxInvoice/TaxInvoice';
+import InvoiceList from './pages/Invoice/InvoiceList';
+import PaymentReceiptPrint from './pages/Payment/PaymentReceiptPrint';
 
-// Component to check if user is already logged in (for login page)
 const PublicRoute = ({ children }) => {
-  const userData = localStorage.getItem('UserData');
-  
+  const userData = sessionStorage.getItem('UserData');
+
   if (userData) {
     try {
       const parsedUserData = JSON.parse(userData);
-      if (parsedUserData?.access_token) {
-        // User is already logged in, redirect to dashboard
+      if (parsedUserData?.access_token && parsedUserData?.isOTPVerified) {
         return <Navigate to="/dashboard" replace />;
       }
     } catch (error) {
-      // Invalid UserData, allow access to login
-      localStorage.removeItem('UserData');
+      sessionStorage.removeItem('UserData');
     }
   }
-  
+
   return children;
 };
 
@@ -52,7 +53,7 @@ function App() {
             <Dashboard />
           </ProtectedRoute>
         }>
-          <Route index element={<Home />} /> 
+          <Route index element={<Home />} />
           <Route path="agent" element={<Agent />} />
           <Route path="supplier" element={<Supplier />} />
           <Route path="contact" element={<Contact />} />
@@ -63,6 +64,11 @@ function App() {
           <Route path="temp" element={<Temp />} />
           <Route path="payment" element={<Payment />} />
           <Route path="paymentreminder" element={<PaymentReminder />} />
+          <Route path="purchaseorder" element={<PurchaseOrder />} />
+          <Route path="POPayment" element={<POPayment />} />
+          <Route path="invoice" element={<InvoiceList />} />
+          <Route path="taxinvoice" element={<TaxInvoice />} />
+          <Route path="PaymentReceiptPrint" element={<PaymentReceiptPrint />} />
           <Route path="listtable" element={<ListTable />} />
         </Route>
         {/* Catch all other routes and redirect to login */}

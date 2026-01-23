@@ -6,7 +6,7 @@ import { toastifySuccess } from "../Utility/Utility";
 const ProfileCard = () => {
 
     const Logout = () => {
-        localStorage.removeItem("UserData");
+        sessionStorage.removeItem("UserData");
         window.location.href = "/";
         toastifySuccess("Logout Successful");
     }

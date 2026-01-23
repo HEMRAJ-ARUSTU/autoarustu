@@ -1,6 +1,22 @@
 
 import axios from "axios";
 
+
+// const getApiBaseURL = () => {
+//     const currentOrigin = window.location.origin;
+    
+//     if (currentOrigin === 'https://automation.arustu.com') {
+//         return 'https://automationapi.arustu.com/api/';
+//     } else {
+//         return 'http://autoapi.arustu.com/api/';
+//     }
+// };
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+// console.log(API_BASE_URL,'API_BASE_URL')
+
+
 export const fetchData = async (URL) => {
     try {
         const res = await axios.get(URL)
@@ -60,7 +76,7 @@ export const Comman_changeArrayFormat = (data, Id, Code, type, col3, col4) => {
 
 const refreshLogin = async () => {
     try {
-        const auth = JSON.parse(localStorage.getItem("UserData"));
+        const auth = JSON.parse(sessionStorage.getItem("UserData"));
 
         if (!auth?.refresh_token) return false;
 
@@ -69,14 +85,15 @@ const refreshLogin = async () => {
             grant_type: "refresh_token",
         };
 
+        // const apiBaseURL = API_BASE_URL;
         const res = await axios.post(
-            "http://autoapi.arustu.com/api/User/Login",
+            `${API_BASE_URL}User/Login`,
             refreshVal
         );
 
         if (res?.data?.error_description == "Successfully Login" && res?.data?.error == 200) {
-            // console.log(res, 'res')
-            localStorage.setItem("UserData", JSON.stringify(res.data));
+
+            sessionStorage.setItem("UserData", JSON.stringify(res.data));
             return true;
         }
 
@@ -90,10 +107,10 @@ const refreshLogin = async () => {
 
 
 export const GetWithToken = async (url, retry = true) => {
-    const auth = JSON.parse(localStorage.getItem("UserData"));
+    const auth = JSON.parse(sessionStorage.getItem("UserData"));
 
     try {
-        const res = await apiClient.get(url, {
+        const res = await axios.get(url, {
             headers: {
                 Authorization: `Bearer ${auth?.access_token}`,
             },
@@ -107,10 +124,10 @@ export const GetWithToken = async (url, retry = true) => {
         if (error?.response?.status === 401 && error?.response?.data?.Message === "Authorization has been denied for this request." && retry) {
             const isLoginDone = await refreshLogin();
             if (isLoginDone) {
-                return await PostWithToken(url, payload, false);
+                return await GetWithToken(url, false);
             }
         }
-        console.error("POST error", error);
+        console.error("GET error", error);
         return null;
     }
 };
@@ -118,7 +135,7 @@ export const GetWithToken = async (url, retry = true) => {
 
 export const PostWithToken = async (url, payload, retry = true) => {
     try {
-        const auth = JSON.parse(localStorage.getItem("UserData"));
+        const auth = JSON.parse(sessionStorage.getItem("UserData"));
 
         const res = await axios.post(url, payload, {
             headers: {

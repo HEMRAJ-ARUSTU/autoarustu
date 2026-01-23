@@ -35,7 +35,7 @@ const Dashboard = () => {
 
     return (
         <div className="flex h-screen bg-gray-50 overflow-hidden">
-            {/* Mobile overlay with blur */}
+
             {isMobile && sidebarOpen && (
                 <div
                     className="fixed inset-0 bg-white/30 backdrop-blur-sm z-40"
@@ -43,7 +43,6 @@ const Dashboard = () => {
                 />
             )}
 
-            {/* Sidebar */}
             <div
                 className={`${
                     isMobile
@@ -56,7 +55,6 @@ const Dashboard = () => {
                 <Sidebar isOpen={sidebarOpen} onClose={handleSidebarClose} />
             </div>
 
-            {/* Main content with blur when sidebar is open on mobile */}
             <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
                 isMobile && sidebarOpen ? 'backdrop-blur-sm' : ''
             }`}>

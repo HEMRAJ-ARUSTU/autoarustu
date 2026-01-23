@@ -2,30 +2,34 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
-  // Check if user is logged in
-  const userData = localStorage.getItem('UserData');
+
+  const userData = sessionStorage.getItem('UserData');
   
   if (!userData) {
-    // User not logged in, redirect to login
+
     return <Navigate to="/" replace />;
   }
 
   try {
     const parsedUserData = JSON.parse(userData);
-    
-    // Check if access_token exists
+
     if (!parsedUserData?.access_token) {
-      // No valid token, redirect to login
-      localStorage.removeItem('UserData');
+
+      sessionStorage.removeItem('UserData');
       return <Navigate to="/" replace />;
     }
 
-    // User is authenticated, render the protected component
+    if (!parsedUserData?.isOTPVerified) {
+
+      sessionStorage.removeItem('UserData');
+      return <Navigate to="/" replace />;
+    }
+
     return children;
   } catch (error) {
-    // Invalid UserData format, clear it and redirect
+
     console.error('Error parsing UserData:', error);
-    localStorage.removeItem('UserData');
+    sessionStorage.removeItem('UserData');
     return <Navigate to="/" replace />;
   }
 };

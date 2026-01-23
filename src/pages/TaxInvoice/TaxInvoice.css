@@ -1,0 +1,356 @@
+
+.invoice-page {
+    padding: 20px;
+    background: #f5f5f5;
+    min-height: 100vh;
+}
+
+.print-button-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.print-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.print-button:hover {
+    background: #1d4ed8;
+}
+
+.print-icon {
+    font-size: 18px;
+}
+
+
+.invoice-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+
+.invoice-box {
+    width: 100%;
+    max-width: 900px;
+    background: white;
+    padding: 20px;
+    border: 1px solid #000;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+
+.invoice-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.invoice-table th,
+.invoice-table td {
+    border: 1px solid #000;
+    padding: 6px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.invoice-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.top-details td {
+    padding: 10px;
+}
+
+.seller-cell,
+.consignee-cell,
+.buyer-cell {
+    width: 50%;
+    vertical-align: top;
+}
+
+.invoice-info-cell {
+    width: 25%;
+    vertical-align: top;
+}
+
+
+.dispatch-table td {
+    padding: 8px;
+}
+
+
+.items-table {
+    margin-top: 15px;
+}
+
+.items-table th {
+    padding: 10px 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.items-table td {
+    padding: 8px;
+}
+
+.description-cell {
+    min-width: 300px;
+}
+
+.sub-items {
+    margin-top: 4px;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.sub-items div {
+    margin-bottom: 1px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.igst-label {
+    padding-left: 20px;
+}
+
+.total-label {
+    padding-left: 20px;
+}
+
+.total-amount {
+    font-size: 13px;
+}
+
+.amount-words-section {
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.bank-signature-table {
+    margin-top: 15px;
+}
+
+.bank-details-cell {
+    width: 60%;
+    vertical-align: top;
+    padding: 10px;
+}
+
+.signature-cell {
+    width: 40%;
+    vertical-align: top;
+    padding: 10px;
+    text-align: center;
+}
+
+.signature-text {
+    margin: 10px 0;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.authorised-signatory {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.invoice-footer {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 11px;
+    border-top: 1px solid #000;
+    padding-top: 8px;
+}
+
+.footer-jurisdiction {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.footer-computer-generated {
+    font-size: 10px;
+}
+
+@media print {
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+    }
+
+    aside,
+    .sidebar,
+    [class*="sidebar"],
+    nav[class*="sidebar"],
+    div[class*="fixed"][class*="left-0"],
+    div[class*="w-64"],
+    div[class*="w-20"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    header,
+    .topbar,
+    [class*="topbar"],
+    [class*="header"],
+    header[class*="sticky"],
+    header[class*="z-30"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    div.flex.h-screen,
+    div[class*="flex-1"][class*="flex"][class*="flex-col"],
+    main[class*="overflow"],
+    .bg-gray-50:not(.invoice-page):not(.invoice-wrapper):not(.invoice-box) {
+        background: white !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    div[class*="backdrop-blur"],
+    div[class*="bg-white/30"] {
+        display: none !important;
+    }
+
+    .print-button-container {
+        display: none !important;
+    }
+
+    .invoice-page {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: white !important;
+        width: 100% !important;
+        height: auto !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        overflow: visible !important;
+    }
+
+    .invoice-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .invoice-box {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 10px 15px !important;
+        margin: 0 auto !important;
+        border: 1px solid #000 !important;
+        page-break-inside: avoid !important;
+        page-break-after: avoid !important;
+        box-shadow: none !important;
+        font-size: 11px !important;
+    }
+
+    .invoice-title {
+        font-size: 18px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: 4px 6px !important;
+        font-size: 11px !important;
+    }
+
+    .sub-items {
+        margin-top: 3px !important;
+        font-size: 10px !important;
+        line-height: 1.4 !important;
+    }
+
+    .sub-items div {
+        margin-bottom: 1px !important;
+    }
+
+    .top-details,
+    .dispatch-table,
+    .items-table,
+    .bank-signature-table {
+        margin-bottom: 8px !important;
+    }
+
+    .amount-words-section {
+        margin: 8px 0 !important;
+        padding: 6px !important;
+        font-size: 11px !important;
+    }
+
+    .invoice-footer {
+        margin-top: 8px !important;
+        padding-top: 6px !important;
+        font-size: 10px !important;
+    }
+
+    @page {
+        margin: 0.3cm;
+        size: A4;
+    }
+
+    .invoice-table {
+        page-break-inside: avoid !important;
+    }
+
+    .items-table tbody tr {
+        page-break-inside: avoid !important;
+    }
+
+    .invoice-wrapper {
+        page-break-inside: avoid !important;
+    }
+
+    * {
+        overflow: visible !important;
+    }
+
+    main > *:not(.invoice-page) {
+        display: none !important;
+    }
+    
+    main {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: white !important;
+    }
+}

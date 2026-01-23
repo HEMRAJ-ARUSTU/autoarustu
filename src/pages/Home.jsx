@@ -5,8 +5,8 @@ import { PostWithToken } from '../ApiMethods/ApiMethods';
 
 const Home = () => {
 
-  const UserData = JSON.parse(localStorage.getItem("UserData"));
-  // console.log(UserData);
+  const UserData = JSON.parse(sessionStorage.getItem("UserData"));
+
 
 
   const navigate = useNavigate();
@@ -110,7 +110,7 @@ const Home = () => {
 
   return (
     <div className="space-y-4 sm:space-y-6 p-2 sm:p-4">
-      {/* Welcome Header */}
+
       <div className="rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
@@ -122,7 +122,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {statCards.map((card, index) => {
           const Icon = card.icon;
@@ -223,7 +222,6 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Quick Links Card */}
         <div className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-5">
             <div className="p-2.5 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-md">

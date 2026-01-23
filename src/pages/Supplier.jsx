@@ -54,10 +54,10 @@ const Supplier = () => {
 
     const handleSaveItem = (payload) => {
         if (payload.id) {
-            // edit mode
+
             setItems((prev) => prev.map((x) => (x.id === payload.id ? payload : x)));
         } else {
-            // add mode
+
             setItems((prev) => [{ ...payload, id: makeId() }, ...prev]);
         }
     };
@@ -116,16 +116,16 @@ const Supplier = () => {
                 sortable: true,
                 cell: (row) => <div className="font-medium text-slate-800">{row.FullName}</div>,
             },
-            // {
-            //     name: <span className="font-semibold">Company Name</span>,
-            //     selector: (row) => row.company || "-",
-            //     sortable: true,
-            // },
-            {
-                name: <span className="font-semibold">Supply Id </span>,
-                selector: (row) => row.SupplyId || "-",
-                sortable: true,
-            },
+
+
+
+
+
+
+
+
+
+
             {
                 name: <span className="font-semibold">Firm Name</span>,
                 selector: (row) => row.FirmName || "-",
@@ -142,18 +142,23 @@ const Supplier = () => {
                 selector: (row) => row.EmailId,
                 sortable: true,
             },
-            // {
-            //     name: <span className="font-semibold">Description</span>,
-            //     selector: (row) => row.description || "-",
-            //     cell: (row) => (
-            //         <div className="truncate max-w-xs" title={row.description}>
-            //             {row.description || "-"}
-            //         </div>
-            //     ),
-            // },
+            {
+                name: <span className="font-semibold">Address</span>,
+                selector: (row) => row.Address || "-",
+                sortable: true,
+            },
+
+
+
+
+
+
+
+
+
             {
                 name: "Actions",
-                // button: true,
+
                 cell: (r) => (
                     <div className="flex gap-2">
                         <button
@@ -251,7 +256,6 @@ const Supplier = () => {
                     onSuccess={GetData_Party}
                 />
 
-                {/* Delete confirmation modal */}
                 {deleteTarget && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center">
                         <div

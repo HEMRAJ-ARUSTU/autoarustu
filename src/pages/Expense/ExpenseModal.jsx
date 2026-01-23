@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
+import { FiX } from "react-icons/fi";
 import { PostWithToken } from "../../ApiMethods/ApiMethods";
 import { toastifySuccess } from "../../Utility/Utility";
 
@@ -55,7 +56,7 @@ const ExpenseModal = ({ open, onClose, editData, onSuccess }) => {
     if (!open) return;
 
     if (editData) {
-      // Find transaction type option if exists
+
       const transactionTypeOption = transactionTypeOptions.find(
         (opt) => opt.value === editData.TransactionType || opt.label === editData.TransactionType
       ) || null;
@@ -105,7 +106,7 @@ const ExpenseModal = ({ open, onClose, editData, onSuccess }) => {
 
   const Insert_Expense = async () => {
     try {
-      const auth = JSON.parse(localStorage.getItem("UserData"));
+      const auth = JSON.parse(sessionStorage.getItem("UserData"));
       const payload = {
         TransactionType: value.TransactionType?.value || value.TransactionType || "",
         Name: value.Name,
@@ -133,7 +134,7 @@ const ExpenseModal = ({ open, onClose, editData, onSuccess }) => {
 
   const Update_Expense = async (ID) => {
     try {
-      const auth = JSON.parse(localStorage.getItem("UserData"));
+      const auth = JSON.parse(sessionStorage.getItem("UserData"));
       const val = {
         ExpenseID: ID,
         Description: value.Description,
@@ -169,12 +170,22 @@ const ExpenseModal = ({ open, onClose, editData, onSuccess }) => {
       <div className="relative mx-auto flex min-h-screen items-center justify-center p-2 sm:p-4">
         <div className="w-full max-w-4xl rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 my-4 max-h-[95vh] overflow-y-auto">
           <div className="p-4 sm:p-6">
-            <h2 className="mb-4 text-lg sm:text-xl font-semibold text-slate-800">
-              {editData ? "Update Expense" : " Add Transaction"}
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg sm:text-xl font-semibold text-slate-800">
+                {editData ? "Update Expense" : " Add Transaction"}
+              </h2>
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-slate-500 hover:text-slate-700 transition-colors p-1 rounded-lg hover:bg-slate-100"
+                title="Close"
+              >
+                <FiX className="w-5 h-5" />
+              </button>
+            </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {/* Transaction Type */}
+
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Transaction Type <span className="text-red-500">*</span>
@@ -192,7 +203,6 @@ const ExpenseModal = ({ open, onClose, editData, onSuccess }) => {
                 )}
               </div>
 
-              {/* Name */}
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Name <span className="text-red-500">*</span>
@@ -209,7 +219,6 @@ const ExpenseModal = ({ open, onClose, editData, onSuccess }) => {
                 )}
               </div>
 
-              {/* Amount */}
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Amount <span className="text-red-500">*</span>
@@ -226,7 +235,6 @@ const ExpenseModal = ({ open, onClose, editData, onSuccess }) => {
                 )}
               </div>
 
-              {/* Description */}
               <div className="flex flex-col sm:col-span-3">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Description
@@ -242,22 +250,6 @@ const ExpenseModal = ({ open, onClose, editData, onSuccess }) => {
             </div>
 
             <div className="mt-6 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  setvalue({
-                    TransactionType: null,
-                    Name: "",
-                    Amount: "",
-                    Description: "",
-                  });
-                }}
-                className="w-full sm:w-auto rounded-xl border border-slate-200 px-4 sm:px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-              >
-                Cancel
-              </button>
-
               {editData ? (
                 <button
                   type="button"
