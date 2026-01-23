@@ -58,7 +58,7 @@ const Temp = () => {
 
   const handleIsVerifiedChange = async (row, isVerified) => {
     try {
-      const auth = JSON.parse(localStorage.getItem("UserData"));
+      const auth = JSON.parse(sessionStorage.getItem("UserData"));
       const val = {
         TempID: row.TempID,
         Name: row.Name,
@@ -111,11 +111,6 @@ const Temp = () => {
         selector: (row) => row.OwnerMobileNo || "-",
         sortable: true,
       },
-      // {
-      //   name: <span className="font-semibold">Office Mobile No.</span>,
-      //   selector: (row) => row.OfficeMobileNo || "-",
-      //   sortable: true,
-      // },
       {
         name: <span className="font-semibold">Final Amount</span>,
         selector: (row) => row.FinalAmt || "-",
@@ -141,11 +136,7 @@ const Temp = () => {
         selector: (row) => row.District || "-",
         sortable: true,
       },
-      // {
-      //   name: <span className="font-semibold">GST No.</span>,
-      //   selector: (row) => row.GSTNo || "-",
-      //   sortable: true,
-      // },
+
       {
         name: <span className="font-semibold">Is Verified</span>,
         selector: (row) => row.IsVerified || false,
@@ -212,7 +203,7 @@ const Temp = () => {
 
   const Delete_Temp = async (TempID) => {
     try {
-      const auth = JSON.parse(localStorage.getItem("UserData"));
+      const auth = JSON.parse(sessionStorage.getItem("UserData"));
       const val = {
         TempID: TempID,
         DeleteByUser: auth?.UserID || "1",
@@ -238,6 +229,7 @@ const Temp = () => {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search temp..."
               className="w-full sm:w-64 md:w-72 rounded-sm border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              autoComplete="off-district"
             />
 
             <button

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
+import { FiX } from "react-icons/fi";
 import { PostWithToken } from "../../ApiMethods/ApiMethods";
 import { toastifySuccess } from "../../Utility/Utility";
 
@@ -30,7 +31,6 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
     { value: "Cancelled", label: "Cancelled" },
   ];
 
-  // Quotation Sent options for dropdown
   const quotationSentOptions = [
     { value: "Yes", label: "Yes" },
     { value: "No", label: "No" },
@@ -73,12 +73,11 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
     if (!open) return;
 
     if (editData) {
-      // Find status option if exists
+
       const statusOption = statusOptions.find(
         (opt) => opt.value === editData.Status || opt.label === editData.Status
       ) || null;
 
-      // Find quotation sent option if exists
       const quotationSentOption = quotationSentOptions.find(
         (opt) => opt.value === editData.QuotationSent || opt.label === editData.QuotationSent
       ) || null;
@@ -166,7 +165,7 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
 
   const Update_Contact = async (ID) => {
     try {
-      const auth = JSON.parse(localStorage.getItem("UserData"));
+      const auth = JSON.parse(sessionStorage.getItem("UserData"));
       const val = {
         ID: ID,
         ModifiedByUser: auth?.UserID || "1",
@@ -212,12 +211,22 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
       <div className="relative mx-auto flex min-h-screen items-center justify-center p-2 sm:p-4">
         <div className="w-full max-w-6xl rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 my-4 max-h-[95vh] overflow-y-auto">
           <div className="p-4 sm:p-6">
-            <h2 className="mb-4 text-lg sm:text-xl font-semibold text-slate-800">
-              {editData ? "Update Contact" : "Add Contact"}
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg sm:text-xl font-semibold text-slate-800">
+                {editData ? "Update Contact" : "Add Contact"}
+              </h2>
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-slate-500 hover:text-slate-700 transition-colors p-1 rounded-lg hover:bg-slate-100"
+                title="Close"
+              >
+                <FiX className="w-5 h-5" />
+              </button>
+            </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {/* Customer Name */}
+
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Customer Name <span className="text-red-500">*</span>
@@ -228,13 +237,14 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
                   onChange={handleChange("CustomerName")}
                   placeholder="Enter customer name"
                   className={inputCls}
+                  autoComplete="off-district"
+
                 />
                 {errors.CustomerName && (
                   <p className="mt-1 text-xs text-red-500">{errors.CustomerName}</p>
                 )}
               </div>
 
-              {/* Mobile No */}
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Mobile No <span className="text-red-500">*</span>
@@ -245,13 +255,14 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
                   onChange={handleChange("MobileNo")}
                   placeholder="Enter mobile number"
                   className={inputCls}
+                  autoComplete="off-district"
+
                 />
                 {errors.MobileNo && (
                   <p className="mt-1 text-xs text-red-500">{errors.MobileNo}</p>
                 )}
               </div>
 
-              {/* Curser Name */}
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Curser Name<span className="text-red-500">*</span>
@@ -262,13 +273,14 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
                   onChange={handleChange("CurserName")}
                   placeholder="Enter curser name"
                   className={inputCls}
+                  autoComplete="off-district"
+
                 />
                 {errors.CurserName && (
                   <p className="mt-1 text-xs text-red-500">{errors.CurserName}</p>
                 )}
               </div>
 
-              {/* Status */}
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Status<span className="text-red-500">*</span>
@@ -285,7 +297,7 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
                   <p className="mt-1 text-xs text-red-500">{errors.Status}</p>
                 )}
               </div>
-              {/* Reference */}
+
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Reference
@@ -296,9 +308,11 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
                   onChange={handleChange("Reference")}
                   placeholder="Enter reference"
                   className={inputCls}
+                  autoComplete="off-district"
+
                 />
               </div>
-              {/* Quotation Sent */}
+
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Quotation Sent
@@ -313,7 +327,6 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
                 />
               </div>
 
-              {/* Quotation Date */}
               <div className="flex flex-col">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Quotation Date
@@ -323,9 +336,11 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
                   value={value.QuotationDate}
                   onChange={handleChange("QuotationDate")}
                   className={inputCls}
+                  autoComplete="off-district"
+
                 />
               </div>
-              {/* Address */}
+
               <div className="flex flex-col sm:col-span-2">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Address
@@ -336,13 +351,11 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
                   onChange={handleChange("Address")}
                   placeholder="Enter address"
                   className={inputCls + " resize-none"}
+                  autoComplete="off-district"
+
                 />
               </div>
 
-
-
-
-              {/* Remarks */}
               <div className="flex flex-col sm:col-span-2">
                 <label className="mb-1 text-sm font-medium text-slate-600">
                   Remarks
@@ -353,32 +366,13 @@ const ContactModal = ({ open, onClose, editData, onSuccess }) => {
                   onChange={handleChange("Remarks")}
                   placeholder="Enter remarks"
                   className={inputCls + " resize-none"}
+                  autoComplete="off-district"
+
                 />
               </div>
             </div>
 
             <div className="mt-6 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  setvalue({
-                    Remarks: "",
-                    Status: null,
-                    QuotationSent: null,
-                    QuotationDate: "",
-                    Reference: "",
-                    CurserName: "",
-                    Address: "",
-                    MobileNo: "",
-                    CustomerName: "",
-                  });
-                }}
-                className="w-full sm:w-auto rounded-xl border border-slate-200 px-4 sm:px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-              >
-                Cancel
-              </button>
-
               {editData ? (
                 <button
                   type="button"

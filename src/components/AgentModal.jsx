@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Select from "react-select";
 import DataTable from "react-data-table-component";
-import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import { FiEdit2, FiTrash2, FiX } from "react-icons/fi";
 import { FaRegEdit } from "react-icons/fa";
 import { PostWithToken } from "../ApiMethods/ApiMethods";
 import { toastifySuccess } from "../Utility/Utility";
@@ -235,7 +235,6 @@ const AgentModal = ({ open, onClose, onSave, editData, onSuccess }) => {
         cells: { style: { padding: "12px" } },
     };
 
-    // ---------------------------------------------------------------------------------------------------------------------------------------
 
     const [errors, setErrors] = useState({});
 
@@ -334,83 +333,102 @@ const AgentModal = ({ open, onClose, onSave, editData, onSuccess }) => {
             <div className="relative mx-auto flex min-h-screen items-center justify-center p-2 sm:p-4">
                 <div className="w-full max-w-6xl rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 my-4 max-h-[95vh] overflow-y-auto">
                     <div className="p-3 sm:p-4 md:p-6">
-                        <h2 className="mb-4 text-lg sm:text-xl font-semibold text-slate-800">
-                            {editData ? "Update Agent" : "Add Agent"}
-                        </h2>
-                        <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                            {/* Name */}
-                            <div className="flex flex-col sm:col-span-2 lg:col-span-1">
-                                <label className="mb-1 text-sm font-medium text-slate-600">
-                                    Name <span className="text-red-500">*</span>
-                                </label>
-                                <div className="space-y-1">
-                                    <input
-                                        type="text"
-                                        value={value.ReferenceName}
-                                        onChange={handleSupplierChange("ReferenceName")}
-                                        placeholder="Enter full name"
-                                        className={inputCls}
-                                    />
-                                    {errors.ReferenceName && (
-                                        <p className="text-red-500 text-xs">{errors.ReferenceName}</p>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* Mobile No */}
-                            <div className="flex flex-col sm:col-span-2 lg:col-span-1">
-                                <label className="mb-1 text-sm font-medium text-slate-600">
-                                    MobileNo <span className="text-red-500">*</span>
-                                </label>
-                                <div className="space-y-1">
-                                    <input
-                                        type="text"
-                                        value={value.MobileNo}
-                                        onChange={handleSupplierChange("MobileNo")}
-                                        placeholder="Enter mobile number"
-                                        className={inputCls}
-                                    />
-                                    {errors.MobileNo && (
-                                        <p className="text-red-500 text-xs">{errors.MobileNo}</p>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col sm:col-span-2 lg:col-span-1">
-                                <label className="mb-1 text-sm font-medium text-slate-600">
-                                    commission <span className="text-red-500">*</span>
-                                </label>
-                                <div className="space-y-1">
-                                    <input
-                                        type="text"
-                                        value={value.commission}
-                                        onChange={handleSupplierChange("commission")}
-                                        placeholder="Enter Commission"
-                                        className={inputCls}
-                                    />
-                                    {errors.commission && (
-                                        <p className="text-red-500 text-xs">{errors.commission}</p>
-                                    )}
-                                </div>
-                            </div>
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="text-lg sm:text-xl font-semibold text-slate-800">
+                                {editData ? "Update Agent" : "Add Agent"}
+                            </h2>
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className="text-slate-500 hover:text-slate-700 transition-colors p-1 rounded-lg hover:bg-slate-100"
+                                title="Close"
+                            >
+                                <FiX className="w-5 h-5" />
+                            </button>
                         </div>
 
+                        <form autoComplete="off" onSubmit={(e) => e.preventDefault()}>
+
+                            <input
+                                type="text"
+                                name="fake_name"
+                                autoComplete="name"
+                                style={{ position: "absolute", opacity: 0, height: 0 }}
+                            />
+                            <input
+                                type="tel"
+                                name="fake_phone"
+                                autoComplete="tel"
+                                style={{ position: "absolute", opacity: 0, height: 0 }}
+                            />
+
+                            <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+                                <div className="flex flex-col sm:col-span-2 lg:col-span-1">
+                                    <label className="mb-1 text-sm font-medium text-slate-600">
+                                        Name <span className="text-red-500">*</span>
+                                    </label>
+                                    <div className="space-y-1">
+                                        <input
+                                            type="text"
+                                            value={value.ReferenceName}
+                                            onChange={handleSupplierChange("ReferenceName")}
+                                            autoComplete="off-district"
+
+                                            placeholder="Enter full name"
+                                            className={inputCls}
+                                        />
+                                        {errors.ReferenceName && (
+                                            <p className="text-red-500 text-xs">{errors.ReferenceName}</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col sm:col-span-2 lg:col-span-1">
+                                    <label className="mb-1 text-sm font-medium text-slate-600">
+                                        MobileNo <span className="text-red-500">*</span>
+                                    </label>
+                                    <div className="space-y-1">
+                                        <input
+                                            type="text"
+                                            value={value.MobileNo}
+                                            onChange={handleSupplierChange("MobileNo")}
+                                            autoComplete="off-district"
+
+                                            placeholder="Enter mobile number"
+                                            className={inputCls}
+                                        />
+                                        {errors.MobileNo && (
+                                            <p className="text-red-500 text-xs">{errors.MobileNo}</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col sm:col-span-2 lg:col-span-1">
+                                    <label className="mb-1 text-sm font-medium text-slate-600">
+                                        commission <span className="text-red-500">*</span>
+                                    </label>
+                                    <div className="space-y-1">
+                                        <input
+                                            type="text"
+                                            value={value.commission}
+                                            onChange={handleSupplierChange("commission")}
+                                            autoComplete="off-district"
+
+                                            placeholder="Enter Commission"
+                                            className={inputCls}
+                                        />
+                                        {errors.commission && (
+                                            <p className="text-red-500 text-xs">{errors.commission}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
 
 
                         <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 mt-4 sm:mt-6">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    onClose(); setvalue({
-                                        ReferenceName: "",
-                                        MobileNo: "",
-                                    });
-                                }}
-                                className="w-full sm:w-auto rounded-xl border border-slate-200 px-4 sm:px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-                            >
-                                Cancel
-                            </button>
-
                             {editData ? (
                                 <button
                                     type="submit"

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import DataTable from "react-data-table-component";
-import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import { FiEdit2, FiTrash2, FiX } from "react-icons/fi";
 import { FaRegEdit } from "react-icons/fa";
 import { Comman_changeArrayFormat, PostWithToken } from "../ApiMethods/ApiMethods";
 import { toastifySuccess } from "../Utility/Utility";
@@ -400,7 +400,7 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
   const [errors, setErrors] = useState({});
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  // const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+
   const gstRegex = /^[0-9A-Z]{15}$/;
 
   const validateAndSubmit = () => {
@@ -496,13 +496,22 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
       <div className="relative mx-auto flex min-h-screen items-center justify-center p-2 sm:p-4">
         <div className="w-full max-w-6xl rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 my-2 sm:my-4 max-h-[98vh] sm:max-h-[95vh] overflow-y-auto">
 
-          {/* ===== TOP BOX ===== */}
           <div className="p-3 sm:p-4 md:p-6">
-            <h2 className="mb-3 sm:mb-4 text-base sm:text-lg md:text-xl font-semibold text-slate-800">
-              {editData ? "Update Supplier" : "Add Supplier"}
-            </h2>
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
+              <h2 className="text-base sm:text-lg md:text-xl font-semibold text-slate-800">
+                {editData ? "Update Supplier" : "Add Supplier"}
+              </h2>
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-slate-500 hover:text-slate-700 transition-colors p-1 rounded-lg hover:bg-slate-100"
+                title="Close"
+              >
+                <FiX className="w-5 h-5" />
+              </button>
+            </div>
             <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {/* Name - Mobile: Full width, Desktop: Grid */}
+
               <div className="flex flex-col sm:grid sm:grid-cols-6 gap-2 sm:gap-3">
                 <label className="text-sm font-medium text-slate-600 sm:col-span-2 sm:text-right sm:whitespace-nowrap">
                   Name <span className="text-red-500">*</span>
@@ -514,6 +523,10 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                     onChange={handleSupplierChange("fullName")}
                     placeholder="Enter full name"
                     className={inputCls}
+
+
+                    autoComplete="off-district"
+
                   />
                   <p className="text-red-500 text-xs mt-1 min-h-[14px]">
                     {errors.fullName || ""}
@@ -521,8 +534,6 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                 </div>
               </div>
 
-
-              {/* Mobile */}
               <div className="flex flex-col sm:grid sm:grid-cols-6 gap-2 sm:gap-3">
                 <label className="text-sm font-medium text-slate-600 sm:col-span-2 sm:text-right sm:whitespace-nowrap">
                   Mobile <span className="text-red-500">*</span>
@@ -534,6 +545,8 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                     onChange={handleSupplierChange("mobile")}
                     placeholder="Enter mobile number"
                     className={inputCls}
+                    autoComplete="off-district"
+
                   />
                   {errors.mobile && (
                     <p className="text-red-500 text-xs mt-1 min-h-[14px]">{errors.mobile}</p>
@@ -541,7 +554,6 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                 </div>
               </div>
 
-              {/* Firm Name */}
               <div className="flex flex-col sm:grid sm:grid-cols-6 gap-2 sm:gap-3">
                 <label className="text-sm font-medium text-slate-600 sm:col-span-2 sm:text-right sm:whitespace-nowrap">
                   Firm Name<span className="text-red-500">*</span>
@@ -553,6 +565,8 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                     onChange={handleSupplierChange("firmName")}
                     placeholder="Enter firm name"
                     className={inputCls}
+                    autoComplete="off-district"
+
                   />
                   {errors.firmName && (
                     <p className="text-red-500 text-xs mt-1 min-h-[14px]">{errors.firmName}</p>
@@ -560,7 +574,6 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                 </div>
               </div>
 
-              {/* Email */}
               <div className="flex flex-col sm:grid sm:grid-cols-6 gap-2 sm:gap-3">
                 <label className="text-sm font-medium text-slate-600 sm:col-span-2 sm:text-right sm:whitespace-nowrap">
                   Email<span className="text-red-500">*</span>
@@ -572,6 +585,8 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                     onChange={handleSupplierChange("email")}
                     placeholder="example@email.com"
                     className={inputCls}
+                    autoComplete="off-district"
+
                   />
                   {errors.email && (
                     <p className="text-red-500 text-xs mt-1 min-h-[14px]">{errors.email}</p>
@@ -579,7 +594,6 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                 </div>
               </div>
 
-              {/* GST No */}
               <div className="flex flex-col sm:grid sm:grid-cols-6 gap-2 sm:gap-3">
                 <label className="text-sm font-medium text-slate-600 sm:col-span-2 sm:text-right sm:whitespace-nowrap">
                   GST No.<span className="text-red-500">*</span>
@@ -591,6 +605,8 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                     onChange={handleSupplierChange("gst")}
                     placeholder="Enter GST number"
                     className={inputCls}
+                    autoComplete="off-district"
+
                   />
                   {errors.gst && (
                     <p className="text-red-500 text-xs mt-1 min-h-[14px]">{errors.gst}</p>
@@ -598,7 +614,6 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                 </div>
               </div>
 
-              {/* Address */}
               <div className="flex flex-col sm:grid sm:grid-cols-6 sm:col-span-2  gap-2 sm:gap-3 sm:items-start">
                 <label className="text-sm font-medium text-slate-600 sm:col-span-2 sm:text-right sm:whitespace-nowrap sm:pt-2">
                   Address<span className="text-red-500">*</span>
@@ -607,6 +622,8 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                   <textarea
                     rows={2}
                     value={supplierForm.Address}
+                    autoComplete="off-district"
+
                     onChange={handleSupplierChange("Address")}
                     placeholder="Enter Address"
                     className={inputCls + " resize-none"}
@@ -618,13 +635,11 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
               </div>
             </div>
 
-
-            {/* ===== BOTTOM BOX ===== */}
             <div className="rounded-lg sm:rounded-2xl border border-slate-200 bg-white p-3 sm:p-4 shadow-sm mt-3 sm:mt-4">
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-slate-800 mb-3">Items</h3>
               <form onSubmit={handleAddOrUpdate} className="space-y-3 sm:space-y-4">
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {/* Item */}
+
                   <div className="flex flex-col sm:grid sm:grid-cols-6 gap-2 sm:gap-3">
                     <label className="text-sm font-medium text-slate-600 sm:col-span-2 sm:text-right sm:whitespace-nowrap">
                       Item
@@ -645,7 +660,6 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                     </div>
                   </div>
 
-                  {/* Rate */}
                   <div className="flex flex-col sm:grid sm:grid-cols-6 gap-2 sm:gap-3">
                     <label className="text-sm font-medium text-slate-600 sm:col-span-2 sm:text-right sm:whitespace-nowrap">
                       Rate <span className="text-red-500">*</span>
@@ -658,6 +672,8 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                         onChange={handleChange("rate")}
                         placeholder="Enter rate"
                         className={inputCls}
+                        autoComplete="off-district"
+
                       />
                       {error2.rate && (
                         <p className="text-red-500 text-xs mt-1 min-h-[14px]">{error2.rate}</p>
@@ -665,7 +681,6 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                     </div>
                   </div>
 
-                  {/* Company Name */}
                   <div className="flex flex-col sm:grid sm:grid-cols-6 gap-2 sm:gap-3">
                     <label className="text-sm font-medium text-slate-600 sm:col-span-2 sm:text-right sm:whitespace-nowrap">
                       Company Name
@@ -688,7 +703,6 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                     </div>
                   </div>
 
-                  {/* Model No */}
                   <div className="flex flex-col sm:grid sm:grid-cols-6 gap-2 sm:gap-3">
                     <label className="text-sm font-medium text-slate-600 sm:col-span-2 sm:text-right sm:whitespace-nowrap">
                       Model No.<span className="text-red-500">*</span>
@@ -700,6 +714,8 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                         onChange={handleChange("ModelNo")}
                         placeholder="Enter model no."
                         className={inputCls}
+                        autoComplete="off-district"
+
                       />
                       {error2.ModelNo && (
                         <p className="text-red-500 text-xs mt-1 min-h-[14px]">{error2.ModelNo}</p>
@@ -707,7 +723,6 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                     </div>
                   </div>
 
-                  {/* Description */}
                   <div className="flex flex-col sm:grid sm:grid-cols-6 gap-2 sm:gap-3">
                     <label className="text-sm font-medium text-slate-600 sm:col-span-2 sm:text-right sm:whitespace-nowrap">
                       Description<span className="text-red-500">*</span>
@@ -719,6 +734,8 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                         onChange={handleChange("description")}
                         placeholder="Enter description"
                         className={inputCls}
+                        autoComplete="off-district"
+
                       />
                       {error2.description && (
                         <p className="text-red-500 text-xs mt-1 min-h-[14px]">{error2.description}</p>
@@ -727,7 +744,6 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
                   </div>
                 </div>
 
-                {/* Add Button - Right aligned */}
                 <div className="flex justify-end mt-2">
                   <button
                     type="button"
@@ -764,14 +780,6 @@ const SupplierModal = ({ open, onClose, onSave, editData, onSaveSupplier, onSucc
             </div>
 
             <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 mt-4 sm:mt-6">
-              <button
-                type="button"
-                onClick={() => { onClose?.(); setTableError(''); seterror2(''); setErrors('') }}
-                className="w-full sm:w-auto rounded-xl border border-slate-200 px-4 sm:px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-              >
-                Cancel
-              </button>
-
               {editData ? (
                 <button
                   type="button"

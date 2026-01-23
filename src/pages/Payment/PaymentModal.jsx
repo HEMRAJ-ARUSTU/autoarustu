@@ -217,7 +217,7 @@ const PaymentModal = ({ open, onClose, editData, onSuccess }) => {
           <div className="p-4 sm:p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg sm:text-xl font-semibold text-slate-800">
-                {editData ? "Update Payment" : "Add Payment"}
+                {editData ? "Payment Received" : "Add Payment"}
               </h2>
               <button
                 type="button"

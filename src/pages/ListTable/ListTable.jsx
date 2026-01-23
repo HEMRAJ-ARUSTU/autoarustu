@@ -64,16 +64,16 @@ const ListTable = () => {
           selector: (row) => row.Description || "-",
           sortable: true,
         },
-        // {
-        //   name: <span className="font-semibold">Description</span>,
-        //   selector: (row) => row.Description || "-",
-        //   sortable: true,
-        //   cell: (row) => (
-        //     <div className="truncate max-w-xs" title={row.Description}>
-        //       {row.Description || "-"}
-        //     </div>
-        //   ),
-        // },
+
+
+
+
+
+
+
+
+
+
       ],
       searchFields: ["Description"],
       displayName: (row) => row.Description,
@@ -212,7 +212,7 @@ const ListTable = () => {
   return (
     <div className="flex-1 space-y-3 overflow-y-auto px-2 py-3">
       <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-        {/* API Selection */}
+
         <div className="mb-4">
           <label className="block text-sm font-medium text-slate-700 mb-2">
             Select API / Table
@@ -288,7 +288,6 @@ const ListTable = () => {
           </div>
         )}
 
-        {/* Modal for Company Item */}
         {selectedConfig?.id === "companyitem" && (
           <CompanyItemModal
             open={open}
@@ -301,7 +300,6 @@ const ListTable = () => {
           />
         )}
 
-        {/* Modal for Item */}
         {selectedConfig?.id === "item" && (
           <ItemModal
             open={open}

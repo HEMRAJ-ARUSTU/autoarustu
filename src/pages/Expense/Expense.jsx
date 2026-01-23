@@ -77,14 +77,12 @@ const Expense = () => {
   const filteredItems = useMemo(() => {
     let filtered = items;
 
-    // Filter by Transaction Type
     if (filterTransactionType) {
       filtered = filtered.filter(
         (r) => r.TransactionType === filterTransactionType.value
       );
     }
 
-    // Filter by Date
     if (filterDate) {
       filtered = filtered.filter((r) => {
         if (!r.CreatedDate && !r.Date) return false;
@@ -95,7 +93,6 @@ const Expense = () => {
       });
     }
 
-    // Filter by From Date
     if (filterFromDate) {
       filtered = filtered.filter((r) => {
         if (!r.CreatedDate && !r.Date) return false;
@@ -106,7 +103,6 @@ const Expense = () => {
       });
     }
 
-    // Filter by search text (Name)
     const q = search.trim().toLowerCase();
     if (q) {
       filtered = filtered.filter((r) => {
@@ -251,9 +247,9 @@ const Expense = () => {
       <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <div className="">
           <div className="mb-4 space-y-3">
-            {/* Filters Row */}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {/* Name Search */}
+
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -261,7 +257,6 @@ const Expense = () => {
                 className="w-full rounded-sm border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
 
-              {/* Transaction Type Filter */}
               <Select
                 value={filterTransactionType}
                 onChange={setFilterTransactionType}
@@ -271,7 +266,6 @@ const Expense = () => {
                 styles={selectStyles}
               />
 
-              {/* Date Filter */}
               <input
                 type="date"
                 value={filterDate}
@@ -280,7 +274,6 @@ const Expense = () => {
                 className="w-full rounded-sm border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
 
-              {/* From Date Filter */}
               <input
                 type="date"
                 value={filterFromDate}
@@ -290,7 +283,6 @@ const Expense = () => {
               />
             </div>
 
-            {/* Add Button Row */}
             <div className="flex justify-end">
               <button
                 onClick={() => {

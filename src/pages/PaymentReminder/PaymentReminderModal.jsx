@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
+import { FiX } from "react-icons/fi";
 import { PostWithToken } from "../../ApiMethods/ApiMethods";
 import { toastifySuccess } from "../../Utility/Utility";
 
@@ -164,7 +165,7 @@ const PaymentReminderModal = ({ open, onClose, editData, onSuccess }) => {
 
   const Insert_PaymentReminder = async () => {
     try {
-      const auth = JSON.parse(localStorage.getItem("UserData"));
+      const auth = JSON.parse(sessionStorage.getItem("UserData"));
       const val = {
         PartyID: value.PartyID?.value || value.PartyID || "",
         NextDate: value.NextDate || "",
@@ -229,12 +230,12 @@ const PaymentReminderModal = ({ open, onClose, editData, onSuccess }) => {
             {editData ? "Edit Payment Reminder" : "Add Payment Reminder"}
           </h2>
           <button
+            type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 transition"
+            className="text-slate-500 hover:text-slate-700 transition-colors p-1 rounded-lg hover:bg-slate-100"
+            title="Close"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <FiX className="w-5 h-5" />
           </button>
         </div>
 
@@ -312,13 +313,6 @@ const PaymentReminderModal = ({ open, onClose, editData, onSuccess }) => {
           </div>
 
           <div className="flex gap-3 justify-end mt-6 pt-6 border-t border-slate-200">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-slate-700 bg-slate-100 rounded-sm hover:bg-slate-200 transition"
-            >
-              Cancel
-            </button>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition"

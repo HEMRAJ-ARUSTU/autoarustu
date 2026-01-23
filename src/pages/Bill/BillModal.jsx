@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import DataTable from "react-data-table-component";
-import { FiTrash2 } from "react-icons/fi";
+import { FiTrash2, FiX } from "react-icons/fi";
 import { FaRegEdit } from "react-icons/fa";
 import { FiCalendar } from "react-icons/fi";
 import Select from "react-select";
@@ -73,7 +73,6 @@ const BillModal = ({ open, onClose, editData, onSuccess }) => {
     if (!open) return;
     GetPartyDropdown();
     GetItemDropdown();
-    // GetStateDropdown();
   }, [open]);
 
   const GetPartyDropdown = async () => {
@@ -98,17 +97,7 @@ const BillModal = ({ open, onClose, editData, onSuccess }) => {
     }
   };
 
-  // const GetStateDropdown = async () => {
-  //   try {
-  //     const states = [
-  //       { value: "07", label: "rajasthan", code: "07" },
-  //     ];
-  //     setStateOptions(states);
-  //   } catch (error) {
-  //     console.error("GetStateDropdown error:", error);
-  //   }
-  // };
-
+ 
 
   useEffect(() => {
     if (!open) return;
@@ -441,7 +430,7 @@ const BillModal = ({ open, onClose, editData, onSuccess }) => {
 
   const InsertBill = async (BillID) => {
     try {
-      const auth = JSON.parse(localStorage.getItem("UserData"));
+      const auth = JSON.parse(sessionStorage.getItem("UserData"));
       const invoiceNo = value.InvoicePrefix && value.InvoiceSuffix
         ? `${value.InvoicePrefix}/${value.InvoiceSuffix}`
         : value.InvoicePrefix || "Auto Generated";
@@ -577,394 +566,441 @@ const BillModal = ({ open, onClose, editData, onSuccess }) => {
       <div className="relative mx-auto flex min-h-screen items-center justify-center p-2 sm:p-4">
         <div className="w-full max-w-7xl rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 my-2 sm:my-4 max-h-[98vh] sm:max-h-[95vh] overflow-y-auto">
           <div className="p-3 sm:p-4 md:p-6">
-            <h2 className="mb-4 text-lg sm:text-xl font-semibold text-slate-800">
-              {editData ? "Update Bill" : "Add Bill"}
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg sm:text-xl font-semibold text-slate-800">
+                {editData ? "Update Bill" : "Add Bill"}
+              </h2>
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-slate-500 hover:text-slate-700 transition-colors p-1 rounded-lg hover:bg-slate-100"
+                title="Close"
+              >
+                <FiX className="w-5 h-5" />
+              </button>
+            </div>
 
-            <div className="flex flex-col lg:flex-row gap-4">
-              <div className="flex-1 lg:flex-[2] space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-1 gap-4">
-                  {/* Left Column */}
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <form autoComplete="off-district" onSubmit={(e) => e.preventDefault()}>
+
+
+              <input
+                type="text"
+                name="fake_name"
+                autoComplete="name"
+                style={{ position: "absolute", opacity: 0, height: 0 }}
+              />
+              <input
+                type="tel"
+                name="fake_phone"
+                autoComplete="tel"
+                style={{ position: "absolute", opacity: 0, height: 0 }}
+              />
+
+
+              <div className="flex flex-col lg:flex-row gap-4">
+                <div className="flex-1 lg:flex-[2] space-y-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-1 gap-4">
+                    {/* Left Column */}
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">User Name</label>
+                          <input
+                            type="text"
+                            value={value.UserName}
+                            onChange={handleBillChange("UserName")}
+                            placeholder="Enter user name"
+                            className={inputCls}
+                            autoComplete="off-district"
+                          />
+                          {errors.UserName && (
+                            <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.UserName}</p>
+                          )}
+                        </div>
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">Mobile#</label>
+                          <input
+                            type="text"
+                            value={value.MobileNo}
+                            onChange={handleBillChange("MobileNo")}
+                            placeholder="Enter mobile number"
+                            maxLength={10}
+                            className={inputCls}
+                            autoComplete="off-district"
+                          />
+                          {errors.MobileNo && (
+                            <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.MobileNo}</p>
+                          )}
+                        </div>
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">Invoice#</label>
+                          <input
+                            type="text"
+                            value={value.InvoicePrefix}
+                            onChange={handleBillChange("InvoicePrefix")}
+                            placeholder="Auto Generated"
+                            className={inputCls}
+                            readOnly
+                            autoComplete="off-district"
+                          />
+                        </div>
+                      </div>
+
+
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600"> GST Number</label>
+
+                          <input
+                            type="text"
+                            value={value.GSTIN}
+                            onChange={handleBillChange("GSTIN")}
+                            placeholder="Enter GSTIN"
+                            className={inputCls}
+                            autoComplete="off-district"
+                          />
+
+                          {errors.GSTIN && (
+                            <p className="mt-1 text-xs text-red-500 min-h-[14px]">
+                              {errors.GSTIN}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* E-mail */}
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">E-mail</label>
+                          <input
+                            type="email"
+                            value={value.Email}
+                            onChange={handleBillChange("Email")}
+                            placeholder="Enter email"
+                            className={inputCls}
+                            autoComplete="off-district"
+                          />
+                          {errors.Email && (
+                            <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.Email}</p>
+                          )}
+                        </div>
+
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">
+                            Mode <span className="text-red-500">*</span>
+                          </label>
+                          <Select
+                            value={selectedMode || null}
+                            onChange={(opt) => setvalue((p) => ({ ...p, PaymentMode: opt?.value || "" }))}
+                            options={paymentModeOptions}
+                            placeholder="Select mode..."
+                            styles={selectStyles}
+                          />
+                          {errors.PaymentMode && (
+                            <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.PaymentMode}</p>
+                          )}
+                        </div>
+
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">
+                            Date <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="date"
+                            value={value.BillDate}
+                            onChange={handleBillChange("BillDate")}
+                            className={inputCls}
+                            autoComplete="off-district"
+                          />
+                          {errors.BillDate && (
+                            <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.BillDate}</p>
+                          )}
+                        </div>
+
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">State</label>
+                          <input
+                            type="text"
+                            value={value.StateName}
+                            placeholder="Rajasthan"
+                            className={inputCls}
+                            readOnly
+                            autoComplete="off-district"
+                          />
+                        </div>
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">Company Name</label>
+                          <input
+                            type="text"
+                            value={value.CompanyName}
+                            onChange={handleBillChange("CompanyName")}
+                            placeholder="Enter company name"
+                            className={inputCls}
+                            autoComplete="off-district"
+                          />
+                          {errors.CompanyName && (
+                            <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.CompanyName}</p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Address */}
                       <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">User Name</label>
-                        <input
-                          type="text"
-                          value={value.UserName}
-                          onChange={handleBillChange("UserName")}
-                          placeholder="Enter user name"
-                          className={inputCls}
+                        <label className="mb-1 text-sm font-medium text-slate-600">Address</label>
+                        <textarea
+                          rows={3}
+                          value={value.Address}
+                          onChange={handleBillChange("Address")}
+                          placeholder="Enter address"
+                          className={inputCls + " resize-none"}
+                          autoComplete="off-district"
                         />
-                        {errors.UserName && (
-                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.UserName}</p>
+                        {errors.Address && (
+                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.Address}</p>
                         )}
                       </div>
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">Mobile#</label>
-                        <input
-                          type="text"
-                          value={value.MobileNo}
-                          onChange={handleBillChange("MobileNo")}
-                          placeholder="Enter mobile number"
-                          maxLength={10}
-                          className={inputCls}
-                        />
-                        {errors.MobileNo && (
-                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.MobileNo}</p>
-                        )}
-                      </div>
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">Invoice#</label>
-                        <input
-                          type="text"
-                          value={value.InvoicePrefix}
-                          onChange={handleBillChange("InvoicePrefix")}
-                          placeholder="Auto Generated"
-                          className={inputCls}
-                          readOnly
-                        />
-                      </div>
+
                     </div>
 
 
+                  </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600"> GST Number</label>
+                  {/* Middle Section - Item Entry */}
+                  <div className="rounded-lg border border-slate-200 bg-white p-3 sm:p-4 shadow-sm">
+                    <h3 className="text-base sm:text-lg font-semibold text-slate-800 mb-3">Item Entry</h3>
+                    <form onSubmit={handleAddOrUpdateItem} className="space-y-4">
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                        {/* Item Name */}
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">
+                            Item Name <span className="text-red-500">*</span>
+                          </label>
+                          <Select
+                            value={itemOptions.find((opt) => opt.label === itemForm.ItemName) || null}
+                            onChange={(opt) => {
+                              setItemForm((p) => ({ ...p, ItemName: opt?.label || "" }));
+                              if (itemErrors.ItemName) {
+                                setItemErrors((prev) => ({ ...prev, ItemName: "" }));
+                              }
+                            }}
+                            options={itemOptions}
+                            placeholder="Select item name..."
+                            styles={selectStyles}
+                            isClearable
+                          />
+                          {itemErrors.ItemName && (
+                            <p className="mt-1 text-xs text-red-500 min-h-[14px]">{itemErrors.ItemName}</p>
+                          )}
+                        </div>
 
-                        <input
-                          type="text"
-                          value={value.GSTIN}
-                          onChange={handleBillChange("GSTIN")}
-                          placeholder="Enter GSTIN"
-                          className={inputCls}
-                        />
+                        {/* Unit */}
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">
+                            Unit <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={itemForm.Unit}
+                            onChange={handleItemChange("Unit")}
+                            placeholder="Enter unit (e.g., Nos, Kg, etc.)"
+                            className={inputCls}
+                            autoComplete="off-district"
+                          />
+                          {itemErrors.Unit && (
+                            <p className="mt-1 text-xs text-red-500 min-h-[14px]">{itemErrors.Unit}</p>
+                          )}
+                        </div>
 
-                        {errors.GSTIN && (
-                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">
-                            {errors.GSTIN}
-                          </p>
-                        )}
+                        {/* Qty */}
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">
+                            Qty <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={itemForm.Qty}
+                            onChange={handleItemChange("Qty")}
+                            placeholder="Enter qty"
+                            className={inputCls}
+                            autoComplete="off-district"
+                          />
+                          {itemErrors.Qty && (
+                            <p className="mt-1 text-xs text-red-500 min-h-[14px]">{itemErrors.Qty}</p>
+                          )}
+                        </div>
+
+                        {/* Rate */}
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">
+                            Rate <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={itemForm.Rate}
+                            onChange={handleItemChange("Rate")}
+                            placeholder="Enter rate"
+                            className={inputCls}
+                            autoComplete="off-district"
+                          />
+                          {itemErrors.Rate && (
+                            <p className="mt-1 text-xs text-red-500 min-h-[14px]">{itemErrors.Rate}</p>
+                          )}
+                        </div>
+
+                        {/* Total Amount */}
+                        <div className="flex flex-col">
+                          <label className="mb-1 text-sm font-medium text-slate-600">Total Amount</label>
+                          <input
+                            type="text"
+                            value={itemForm.TotalAmount}
+                            readOnly
+                            placeholder="Auto calculated"
+                            className={inputCls + " bg-slate-50"}
+                            autoComplete="off-district"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex justify-end mt-2">
+                        <button
+                          type="button"
+                          onClick={handleAddOrUpdateItem}
+                          className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700"
+                        >
+                          {localEdit ? "Update Item" : "Add Item"}
+                        </button>
                       </div>
 
-                      {/* E-mail */}
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">E-mail</label>
-                        <input
-                          type="email"
-                          value={value.Email}
-                          onChange={handleBillChange("Email")}
-                          placeholder="Enter email"
-                          className={inputCls}
-                        />
-                        {errors.Email && (
-                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.Email}</p>
-                        )}
-                      </div>
 
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">
-                          Mode <span className="text-red-500">*</span>
-                        </label>
-                        <Select
-                          value={selectedMode || null}
-                          onChange={(opt) => setvalue((p) => ({ ...p, PaymentMode: opt?.value || "" }))}
-                          options={paymentModeOptions}
-                          placeholder="Select mode..."
-                          styles={selectStyles}
-                        />
-                        {errors.PaymentMode && (
-                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.PaymentMode}</p>
-                        )}
-                      </div>
 
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">
-                          Date <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="date"
-                          value={value.BillDate}
-                          onChange={handleBillChange("BillDate")}
-                          className={inputCls}
-                        />
-                        {errors.BillDate && (
-                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.BillDate}</p>
-                        )}
-                      </div>
-
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">State</label>
-                        <input
-                          type="text"
-                          value={value.StateName}
-                          placeholder="Rajasthan"
-                          className={inputCls}
-                          readOnly
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">Company Name</label>
-                        <input
-                          type="text"
-                          value={value.CompanyName}
-                          onChange={handleBillChange("CompanyName")}
-                          placeholder="Enter company name"
-                          className={inputCls}
-                        />
-                        {errors.CompanyName && (
-                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.CompanyName}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Address */}
-                    <div className="flex flex-col">
-                      <label className="mb-1 text-sm font-medium text-slate-600">Address</label>
-                      <textarea
-                        rows={3}
-                        value={value.Address}
-                        onChange={handleBillChange("Address")}
-                        placeholder="Enter address"
-                        className={inputCls + " resize-none"}
-                      />
-                      {errors.Address && (
-                        <p className="mt-1 text-xs text-red-500 min-h-[14px]">{errors.Address}</p>
+                      {tableError && (
+                        <p className="mb-2 text-sm text-red-600 font-medium">{tableError}</p>
                       )}
-                    </div>
-
+                    </form>
                   </div>
 
-
-                </div>
-
-                {/* Middle Section - Item Entry */}
-                <div className="rounded-lg border border-slate-200 bg-white p-3 sm:p-4 shadow-sm">
-                  <h3 className="text-base sm:text-lg font-semibold text-slate-800 mb-3">Item Entry</h3>
-                  <form onSubmit={handleAddOrUpdateItem} className="space-y-4">
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
-                      {/* Item Name */}
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">
-                          Item Name <span className="text-red-500">*</span>
-                        </label>
-                        <Select
-                          value={itemOptions.find((opt) => opt.label === itemForm.ItemName) || null}
-                          onChange={(opt) => {
-                            setItemForm((p) => ({ ...p, ItemName: opt?.label || "" }));
-                            if (itemErrors.ItemName) {
-                              setItemErrors((prev) => ({ ...prev, ItemName: "" }));
-                            }
-                          }}
-                          options={itemOptions}
-                          placeholder="Select item name..."
-                          styles={selectStyles}
-                          isClearable
-                        />
-                        {itemErrors.ItemName && (
-                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">{itemErrors.ItemName}</p>
-                        )}
-                      </div>
-
-                      {/* Unit */}
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">
-                          Unit <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          value={itemForm.Unit}
-                          onChange={handleItemChange("Unit")}
-                          placeholder="Enter unit (e.g., Nos, Kg, etc.)"
-                          className={inputCls}
-                        />
-                        {itemErrors.Unit && (
-                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">{itemErrors.Unit}</p>
-                        )}
-                      </div>
-
-                      {/* Qty */}
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">
-                          Qty <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          value={itemForm.Qty}
-                          onChange={handleItemChange("Qty")}
-                          placeholder="Enter qty"
-                          className={inputCls}
-                        />
-                        {itemErrors.Qty && (
-                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">{itemErrors.Qty}</p>
-                        )}
-                      </div>
-
-                      {/* Rate */}
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">
-                          Rate <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          value={itemForm.Rate}
-                          onChange={handleItemChange("Rate")}
-                          placeholder="Enter rate"
-                          className={inputCls}
-                        />
-                        {itemErrors.Rate && (
-                          <p className="mt-1 text-xs text-red-500 min-h-[14px]">{itemErrors.Rate}</p>
-                        )}
-                      </div>
-
-                      {/* Total Amount */}
-                      <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-medium text-slate-600">Total Amount</label>
-                        <input
-                          type="text"
-                          value={itemForm.TotalAmount}
-                          readOnly
-                          placeholder="Auto calculated"
-                          className={inputCls + " bg-slate-50"}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-end mt-2">
-                      <button
-                        type="button"
-                        onClick={handleAddOrUpdateItem}
-                        className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700"
-                      >
-                        {localEdit ? "Update Item" : "Add Item"}
-                      </button>
-                    </div>
-
-
-
-                    {tableError && (
-                      <p className="mb-2 text-sm text-red-600 font-medium">{tableError}</p>
-                    )}
-                  </form>
-                </div>
-
-                {/* Bottom Section - Item List & Summary */}
-                <div className="overflow-x-auto">
-                  <DataTable
-                    columns={columns}
-                    data={rows}
-                    pagination={rows?.length > 0}
-                    highlightOnHover={rows?.length > 0}
-                    striped
-                    fixedHeader
-                    fixedHeaderScrollHeight="300px"
-                    responsive
-                    customStyles={{
-                      headRow: { style: { backgroundColor: "#2563eb", minHeight: "44px" } },
-                      headCells: {
-                        style: {
-                          backgroundColor: "#2563eb",
-                          color: "#fff",
-                          fontWeight: 700,
-                          textTransform: "uppercase",
-                          fontSize: "12px",
-                          letterSpacing: "0.06em",
-                          borderBottom: "0",
+                  {/* Bottom Section - Item List & Summary */}
+                  <div className="overflow-x-auto">
+                    <DataTable
+                      columns={columns}
+                      data={rows}
+                      pagination={rows?.length > 0}
+                      highlightOnHover={rows?.length > 0}
+                      striped
+                      fixedHeader
+                      fixedHeaderScrollHeight="300px"
+                      responsive
+                      customStyles={{
+                        headRow: { style: { backgroundColor: "#2563eb", minHeight: "44px" } },
+                        headCells: {
+                          style: {
+                            backgroundColor: "#2563eb",
+                            color: "#fff",
+                            fontWeight: 700,
+                            textTransform: "uppercase",
+                            fontSize: "12px",
+                            letterSpacing: "0.06em",
+                            borderBottom: "0",
+                          },
                         },
-                      },
-                      rows: { style: { minHeight: "52px" } },
-                      cells: { style: { padding: "12px" } },
-                    }}
-                    noDataComponent={<div className="p-4 text-center text-slate-500">No items added</div>}
-                    onRowClicked={(row) => handleEditItem(row)}
-                  />
+                        rows: { style: { minHeight: "52px" } },
+                        cells: { style: { padding: "12px" } },
+                      }}
+                      noDataComponent={<div className="p-4 text-center text-slate-500">No items added</div>}
+                      onRowClicked={(row) => handleEditItem(row)}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* Summary of Charges - Right Side (Fixed) */}
-              <div className="w-full lg:w-80 xl:w-96 lg:flex-shrink-0 bg-slate-800 rounded-lg p-3 sm:p-4 text-white h-fit lg:sticky lg:top-4">
-                <h3 className="text-lg font-semibold mb-4">Summary of Charges</h3>
-                <div className="space-y-4">
-                  {/* Total */}
-                  <div className="flex justify-between items-center">
-                    <label className="text-sm font-medium">Total</label>
-                    <input
-                      type="text"
-                      value={calculatedSummary.SubTotal.toFixed(2)}
-                      readOnly
-                      className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
-                    />
-                  </div>
-
-                  {/* Discount */}
-                  <div className="flex justify-between items-center">
-                    <label className="text-sm font-medium">Discount</label>
-                    <input
-                      type="text"
-                      value={summary.Discount}
-                      onChange={handleSummaryChange("Discount")}
-                      className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
-                    />
-                  </div>
-
-                  {/* Total (after discount) */}
-                  <div className="flex justify-between items-center">
-                    <label className="text-sm font-medium">Total</label>
-                    <input
-                      type="text"
-                      value={(calculatedSummary.SubTotal - summary.Discount).toFixed(2)}
-                      readOnly
-                      className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
-                    />
-                  </div>
-
-                  {/* SGST */}
-                  <div className="flex justify-between items-center gap-2">
-                    <label className="text-sm font-medium">SGST @</label>
-                    <div className="flex gap-1 items-center">
+                {/* Summary of Charges - Right Side (Fixed) */}
+                <div className="w-full lg:w-80 xl:w-96 lg:flex-shrink-0 bg-slate-800 rounded-lg p-3 sm:p-4 text-white h-fit lg:sticky lg:top-4">
+                  <h3 className="text-lg font-semibold mb-4">Summary of Charges</h3>
+                  <div className="space-y-4">
+                    {/* Total */}
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-medium">Total</label>
                       <input
                         type="text"
-                        value={summary.SGSTPercent}
-                        onChange={handleSummaryChange("SGSTPercent")}
+                        value={calculatedSummary.SubTotal.toFixed(2)}
                         readOnly
-                        className="w-12 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
-                      />
-                      <span className="text-sm">%</span>
-                      <input
-                        type="text"
-                        value={calculatedSummary.SGSTAmount.toFixed(2)}
-                        readOnly
-                        className="w-20 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
+                        className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
+                        autoComplete="off-district"
                       />
                     </div>
-                  </div>
 
-                  {/* CGST */}
-                  <div className="flex justify-between items-center gap-2">
-                    <label className="text-sm font-medium">CGST @</label>
-                    <div className="flex gap-1 items-center">
+                    {/* Discount */}
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-medium">Discount</label>
                       <input
                         type="text"
-                        value={summary.CGSTPercent}
-                        readOnly
-                        onChange={handleSummaryChange("CGSTPercent")}
-                        className="w-12 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
-                      />
-                      <span className="text-sm">%</span>
-                      <input
-                        type="text"
-                        value={calculatedSummary.CGSTAmount.toFixed(2)}
-                        readOnly
-                        className="w-20 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
+                        value={summary.Discount}
+                        onChange={handleSummaryChange("Discount")}
+                        className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
+                        autoComplete="off-district"
                       />
                     </div>
-                  </div>
 
-                  {/* IGST */}
-                  {/* <div className="flex justify-between items-center gap-2">
+                    {/* Total (after discount) */}
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-medium">Total</label>
+                      <input
+                        type="text"
+                        value={(calculatedSummary.SubTotal - summary.Discount).toFixed(2)}
+                        readOnly
+                        className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
+                        autoComplete="off-district"
+                      />
+                    </div>
+
+                    {/* SGST */}
+                    <div className="flex justify-between items-center gap-2">
+                      <label className="text-sm font-medium">SGST @</label>
+                      <div className="flex gap-1 items-center">
+                        <input
+                          type="text"
+                          value={summary.SGSTPercent}
+                          onChange={handleSummaryChange("SGSTPercent")}
+                          readOnly
+                          className="w-12 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
+                          autoComplete="off-district"
+                        />
+                        <span className="text-sm">%</span>
+                        <input
+                          type="text"
+                          value={calculatedSummary.SGSTAmount.toFixed(2)}
+                          readOnly
+                          className="w-20 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
+                          autoComplete="off-district"
+                        />
+                      </div>
+                    </div>
+
+                    {/* CGST */}
+                    <div className="flex justify-between items-center gap-2">
+                      <label className="text-sm font-medium">CGST @</label>
+                      <div className="flex gap-1 items-center">
+                        <input
+                          type="text"
+                          value={summary.CGSTPercent}
+                          readOnly
+                          onChange={handleSummaryChange("CGSTPercent")}
+                          className="w-12 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
+                          autoComplete="off-district"
+                        />
+                        <span className="text-sm">%</span>
+                        <input
+                          type="text"
+                          value={calculatedSummary.CGSTAmount.toFixed(2)}
+                          readOnly
+                          className="w-20 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
+                          autoComplete="off-district"
+                        />
+                      </div>
+                    </div>
+
+                    {/* IGST */}
+                    {/* <div className="flex justify-between items-center gap-2">
                     <label className="text-sm font-medium">IGST @</label>
                     <div className="flex gap-1 items-center">
                       <input
@@ -983,52 +1019,57 @@ const BillModal = ({ open, onClose, editData, onSuccess }) => {
                     </div>
                   </div> */}
 
-                  {/* Grand Total */}
-                  <div className="flex justify-between items-center border-t border-slate-600 pt-2">
-                    <label className="text-sm font-semibold">Grand Total</label>
-                    <input
-                      type="text"
-                      value={calculatedSummary.GrandTotal.toFixed(2)}
-                      readOnly
-                      className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm font-semibold text-white text-right"
-                    />
-                  </div>
+                    {/* Grand Total */}
+                    <div className="flex justify-between items-center border-t border-slate-600 pt-2">
+                      <label className="text-sm font-semibold">Grand Total</label>
+                      <input
+                        type="text"
+                        value={calculatedSummary.GrandTotal.toFixed(2)}
+                        readOnly
+                        className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm font-semibold text-white text-right"
+                        autoComplete="off-district"
+                      />
+                    </div>
 
-                  {/* Round off */}
-                  <div className="flex justify-between items-center">
-                    <label className="text-sm font-medium">Round off</label>
-                    <input
-                      type="text"
-                      value={calculatedSummary.RoundOff}
-                      readOnly
-                      className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
-                    />
-                  </div>
+                    {/* Round off */}
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-medium">Round off</label>
+                      <input
+                        type="text"
+                        value={calculatedSummary.RoundOff}
+                        readOnly
+                        className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
+                        autoComplete="off-district"
+                      />
+                    </div>
 
-                  {/* Payment Received */}
-                  <div className="flex justify-between items-center">
-                    <label className="text-sm font-medium">Payment Received</label>
-                    <input
-                      type="text"
-                      value={summary.PaymentReceived}
-                      onChange={handleSummaryChange("PaymentReceived")}
-                      className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
-                    />
-                  </div>
+                    {/* Payment Received */}
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-medium">Payment Received</label>
+                      <input
+                        type="text"
+                        value={summary.PaymentReceived}
+                        onChange={handleSummaryChange("PaymentReceived")}
+                        className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm text-white text-right"
+                        autoComplete="off-district"
+                      />
+                    </div>
 
-                  {/* Due Amount */}
-                  <div className="flex justify-between items-center border-t border-slate-600 pt-2">
-                    <label className="text-sm font-semibold">Due Amount</label>
-                    <input
-                      type="text"
-                      value={calculatedSummary.DueAmount}
-                      readOnly
-                      className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm font-semibold text-white text-right"
-                    />
+                    {/* Due Amount */}
+                    <div className="flex justify-between items-center border-t border-slate-600 pt-2">
+                      <label className="text-sm font-semibold">Due Amount</label>
+                      <input
+                        type="text"
+                        value={calculatedSummary.DueAmount}
+                        readOnly
+                        className="w-24 rounded border border-slate-600 bg-slate-700 px-2 py-1 text-sm font-semibold text-white text-right"
+                        autoComplete="off-district"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </form>
 
             {/* Bottom Action Buttons */}
             <div className="mt-6 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">

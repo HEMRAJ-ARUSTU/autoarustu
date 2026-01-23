@@ -30,3 +30,27 @@ div[data-testid="table-header"],
   max-height: 36px;
   overflow-y: auto;
 }
+
+
+#print-wrapper {
+  display: none;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #print-wrapper,
+  #print-wrapper * {
+    visibility: visible;
+  }
+
+  #print-wrapper {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}

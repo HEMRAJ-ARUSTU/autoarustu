@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { FiChevronDown, FiTruck, FiUserCheck, FiCircle, FiPhone, FiHome, FiFileText, FiList, FiDollarSign, FiUsers, FiClock, FiCreditCard, FiBell } from "react-icons/fi";
+import { FiChevronDown, FiTruck, FiUserCheck, FiCircle, FiPhone, FiHome, FiFileText, FiList, FiDollarSign, FiUsers, FiClock, FiCreditCard, FiBell, FiShoppingCart, FiPrinter } from "react-icons/fi";
 import { FiPlus } from "react-icons/fi";
 
 const items = [
@@ -10,6 +10,16 @@ const items = [
     children: [
       { label: "Add Supplier", to: "/dashboard/supplier", icon: FiPlus },
     ],
+  },
+  {
+    label: "Purchase Order",
+    icon: FiShoppingCart,
+    children: [{ label: "Add Purchase Order", to: "/dashboard/purchaseorder" }],
+  },
+  {
+    label: "PO Payment",
+    icon: FiShoppingCart,
+    children: [{ label: "Add PO Payment", to: "/dashboard/POPayment" }],
   },
   {
     label: "Agent",
@@ -27,14 +37,14 @@ const items = [
     children: [{ label: "Add Party", to: "/dashboard/party" }],
   },
   {
+    label: "Party Payment",
+    icon: FiCreditCard,
+    children: [{ label: "Party Payment", to: "/dashboard/payment" }],
+  },
+  {
     label: "Temp",
     icon: FiClock,
     children: [{ label: "Add Temp", to: "/dashboard/temp" }],
-  },
-  {
-    label: "Payment",
-    icon: FiCreditCard,
-    children: [{ label: "Add Payment", to: "/dashboard/payment" }],
   },
   {
     label: "Payment Reminder",
@@ -45,6 +55,13 @@ const items = [
     label: "Bill",
     icon: FiFileText,
     children: [{ label: "Add Bill", to: "/dashboard/bill" }],
+  },
+  {
+    label: "Tax Invoice",
+    icon: FiPrinter,
+    children: [
+      { label: "Invoice List", to: "/dashboard/invoice" }
+    ],
   },
   {
     label: "Transactions",
@@ -75,6 +92,9 @@ export default function Sidebar({ isOpen, onClose }) {
     if (pathname.includes("/paymentreminder")) setOpenKey("Payment Reminder");
     if (pathname.includes("/payment")) setOpenKey("Payment");
     if (pathname.includes("/bill")) setOpenKey("Bill");
+    if (pathname.includes("/taxinvoice") || pathname.includes("/invoice")) setOpenKey("Tax Invoice");
+    if (pathname.includes("/purchaseorder")) setOpenKey("Purchase Order");
+    if (pathname.includes("/POPayment")) setOpenKey("PO Payment");
     if (pathname.includes("/expense")) setOpenKey("Transactions");
     if (pathname.includes("/listtable")) setOpenKey("List / Table");
   }, [pathname]);
@@ -90,7 +110,7 @@ export default function Sidebar({ isOpen, onClose }) {
   const toggle = (label) => setOpenKey((p) => (p === label ? null : label));
 
   const handleLinkClick = () => {
-  
+
     if (isMobile && onClose) {
       onClose();
     }
@@ -102,9 +122,8 @@ export default function Sidebar({ isOpen, onClose }) {
 
   return (
     <aside
-      className={`h-full bg-white border-r border-slate-200 flex flex-col ${
-        isOpen ? "w-64" : "w-20"
-      } transition-all duration-300 shadow-lg`}
+      className={`h-full bg-white border-r border-slate-200 flex flex-col ${isOpen ? "w-64" : "w-20"
+        } transition-all duration-300 shadow-lg`}
     >
       <div className="flex items-center justify-center h-16 border-b border-slate-200">
         <h1 className={`font-semibold ${isOpen ? "text-xl" : "text-lg"}`}>
@@ -117,10 +136,9 @@ export default function Sidebar({ isOpen, onClose }) {
           to="/dashboard"
           onClick={handleLinkClick}
           className={({ isActive }) =>
-            `flex items-center gap-3 rounded-lg p-3 text-sm font-medium transition-colors ${
-              isActive || isDashboard
-                ? "bg-blue-50 text-blue-600"
-                : "text-slate-600 hover:bg-slate-100"
+            `flex items-center gap-3 rounded-lg p-3 text-sm font-medium transition-colors ${isActive || isDashboard
+              ? "bg-blue-50 text-blue-600"
+              : "text-slate-600 hover:bg-slate-100"
             }`
           }
         >
@@ -134,7 +152,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
           return (
             <div key={item.label} className="space-y-1">
-              {/* Parent */}
+
               <button
                 type="button"
                 onClick={() => toggle(item.label)}
@@ -156,13 +174,12 @@ export default function Sidebar({ isOpen, onClose }) {
                 )}
               </button>
 
-              {/* Children */}
               {isOpen && isExpanded && (
                 <div className="ml-11 space-y-1">
                   {item.children.map((c) => (
-                    <NavLink 
-                      key={c.label} 
-                      to={c.to} 
+                    <NavLink
+                      key={c.label}
+                      to={c.to}
                       className={childCls}
                       onClick={handleLinkClick}
                     >
@@ -179,4 +196,3 @@ export default function Sidebar({ isOpen, onClose }) {
     </aside>
   );
 }
-// export default Sidebar;

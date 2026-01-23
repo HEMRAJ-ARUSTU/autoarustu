@@ -209,7 +209,7 @@ export default function Table() {
 
     return (
         <>
-            {/* scroll container */}
+
             <Card>
                 <div className="w-full overflow-x-auto pt-0">
                     <DataTable

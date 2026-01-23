@@ -9,8 +9,36 @@ const Topbar = ({ onMenuClick, isSidebarOpen }) => {
     const [showProfile, setShowProfile] = useState(false);
     const [currentTime, setCurrentTime] = useState(new Date());
     const profileRef = useRef(null);
+    const [userShortName, setUserShortName] = useState("JD");
 
     const isDashboard = location.pathname === "/dashboard" || location.pathname === "/dashboard/";
+
+    const getShortName = (fullName) => {
+        if (!fullName) return "JD";
+        const words = fullName.trim().split(/\s+/);
+        if (words.length >= 2) {
+
+            return (words[0][0] + words[1][0]).toUpperCase();
+        } else if (words.length === 1) {
+
+            return words[0].substring(0, 2).toUpperCase();
+        }
+        return "JD";
+    };
+
+    useEffect(() => {
+        try {
+            const userDataStr = sessionStorage.getItem("UserData");
+            if (userDataStr) {
+                const userData = JSON.parse(userDataStr);
+                if (userData.FullName) {
+                    setUserShortName(getShortName(userData.FullName));
+                }
+            }
+        } catch (error) {
+            console.error("Error getting user data from sessionStorage:", error);
+        }
+    }, []);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -39,14 +67,13 @@ const Topbar = ({ onMenuClick, isSidebarOpen }) => {
         return "Dashboard";
     };
 
-    // const formatTime = (date) => {
-    //     return date.toLocaleTimeString("en-US", {
-    //         hour: "2-digit",
-    //         minute: "2-digit",
-    //         second: "2-digit",
-    //         hour12: true,
-    //     });
-    // };
+
+
+
+
+
+
+
 
     const formatDate = (date) => {
         return date.toLocaleDateString("en-US", {
@@ -61,7 +88,7 @@ const Topbar = ({ onMenuClick, isSidebarOpen }) => {
 
     return (
         <header className="sticky top-0 z-30 flex h-14 sm:h-16 items-center justify-between border-b border-slate-200 bg-white px-2 sm:px-3 md:px-4 lg:px-6 shadow-sm gap-1 sm:gap-2">
-            {/* Left Side - Menu & Title */}
+
             <div className="flex items-center min-w-0 gap-1 sm:gap-2 md:gap-3 flex-shrink-0">
                 <button
                     onClick={onMenuClick}
@@ -87,7 +114,6 @@ const Topbar = ({ onMenuClick, isSidebarOpen }) => {
                 )}
             </div>
 
-            {/* Search Bar - Hidden on mobile, visible on tablet+ */}
             <div className="hidden sm:block relative mx-1 sm:mx-2 md:mx-4 flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-2xl min-w-0">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 sm:pl-3">
                     <FiSearch className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-slate-400" />
@@ -101,24 +127,14 @@ const Topbar = ({ onMenuClick, isSidebarOpen }) => {
                 />
             </div>
 
-            {/* Right Side Icons - All visible on mobile with compact size */}
             <div className="flex items-center space-x-0.5 sm:space-x-1 md:space-x-2 flex-shrink-0">
-                {/* Date - Visible on mobile with text, also on desktop */}
+
                 <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 bg-slate-50 rounded-lg">
                     <FiCalendar className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-slate-600" />
                     <span className="text-[9px] sm:text-[10px] md:text-xs text-slate-600 font-medium">{formatDate(currentTime)}</span>
                 </div>
-                
-                {/* Time - Hidden on mobile, visible on tablet+ */}
-                {/* <div className="hidden sm:flex items-center gap-1 sm:gap-1.5 md:gap-2 px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 bg-slate-50 rounded-lg">
-                    <FiClock className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-slate-600" />
-                    <span className="text-[9px] sm:text-[10px] md:text-xs text-slate-600 font-medium">{formatTime(currentTime)}</span>
-                </div> */}
 
-                {/* <button className="inline-flex h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9 lg:h-10 lg:w-10 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900">
-                    <FiSun className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 lg:h-5 lg:w-5" />
-                    <span className="sr-only">Toggle theme</span>
-                </button> */}
+
 
                 <button className="relative inline-flex h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9 lg:h-10 lg:w-10 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900">
                     <FiMail className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 lg:h-5 lg:w-5" />
@@ -135,17 +151,16 @@ const Topbar = ({ onMenuClick, isSidebarOpen }) => {
                 </button>
 
                 <div className="relative" ref={profileRef}>
-                    {/* Avatar */}
+
                     <div
                         className="ml-1 sm:ml-2 h-8 w-8 sm:h-10 sm:w-10 cursor-pointer overflow-hidden rounded-full border-2 border-white bg-blue-100 shadow-sm"
                         onClick={() => setShowProfile(prev => !prev)}
                     >
                         <div className="flex h-full items-center justify-center text-xs sm:text-sm font-medium text-blue-600">
-                            JD
+                            {userShortName}
                         </div>
                     </div>
 
-                    {/* Dropdown */}
                     {showProfile && (
                         <div className="absolute right-0 top-11 sm:top-12 z-50">
                             <ProfileCard />
